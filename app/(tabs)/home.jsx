@@ -14,6 +14,8 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
 
+import { useRouter } from "expo-router";
+
 
 import Banner    from "../../assets/images/Banner.png";
 import CaffeMocha from "../../assets/images/2.png";
@@ -34,21 +36,21 @@ const COFFEES = [
   { id: "4", name: "Americano",    subtitle: "Black Bold",    price: "3.20", rating: "4.8", image: Americano   },
 ];
 
-function CoffeeCard({ item }) {
+function CoffeeCard({ item, onPress }) {
   return (
-    <View style={styles.card}>
-      {/* Coffee image area */}
+    <TouchableOpacity
+      onPress={onPress}
+      activeOpacity={0.7}
+      style={styles.card}   // ← style goes here now
+    >
       <View style={styles.cardImageWrapper}>
         {item.image ? (
           <Image source={item.image} style={styles.cardImage} resizeMode="cover" />
         ) : (
-          // Placeholder shown until you add real images
           <View style={styles.cardImagePlaceholder}>
             <Ionicons name="cafe-outline" size={40} color="#C67C4E" />
           </View>
         )}
- 
-        {/* Rating badge — top-right corner of the image */}
         <View style={styles.ratingBadge}>
           <Ionicons name="star" size={10} color="#FBBE21" />
           <Text style={styles.ratingText}>{item.rating}</Text>
@@ -64,12 +66,13 @@ function CoffeeCard({ item }) {
           </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 
 
 export default function HomeScreen() {
+  const router = useRouter(); 
   const [activeCategory, setActiveCategory] = useState("All Coffee");
 
   const [search, setSearch] = useState("");
@@ -167,7 +170,7 @@ export default function HomeScreen() {
             scrollEnabled={false}
             columnWrapperStyle={styles.gridRow}
             contentContainerStyle={styles.gridContent}
-            renderItem={({ item }) => <CoffeeCard item={item} />}
+            renderItem={({ item }) => <CoffeeCard item={item} onPress={() => router.push(`/detail/${item.id}`)} />}
           />
 
 
