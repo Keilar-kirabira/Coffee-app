@@ -13,9 +13,12 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
+import Banner from "../../assets/images/Banner.png";
+
+const { width } = Dimensions.get("window");
 
 export default function HomeScreen() {
-     const [search, setSearch] = useState("");
+  const [search, setSearch] = useState("");
   return (
     <View style={styles.root}>
       <LinearGradient
@@ -45,10 +48,34 @@ export default function HomeScreen() {
                 onChangeText={setSearch}
               />
             </View>
-             <TouchableOpacity style={styles.filterButton}>
+            <TouchableOpacity style={styles.filterButton}>
               <Ionicons name="options-outline" size={22} color="#FFFFFF" />
             </TouchableOpacity>
           </View>
+
+<View style={styles.bannerWrapper}>
+  <LinearGradient
+    colors={["#111111", "#313131"]}
+    start={{ x: 1, y: 0 }}
+    end={{ x: 0, y: 1 }}
+    style={styles.banner}
+  >
+    <View style={styles.promoPill}>
+      <Text style={styles.promoText}>Promo</Text>
+    </View>
+
+    {/* Banner headline */}
+    <Text style={styles.bannerHeadline}>
+      Buy one get{"\n"}one FREE
+    </Text>
+     
+    <Image
+      source={Banner}
+      style={styles.bannerImage}
+      resizeMode="contain"
+    />
+  </LinearGradient>
+</View>
         </ScrollView>
       </SafeAreaView>
     </View>
@@ -101,32 +128,32 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
 
-  searchRow:{
-   flexDirection: "row",
-   paddingHorizontal: 24,
-   gap: 12,
-   marginBottom: 24,
+  searchRow: {
+    flexDirection: "row",
+    paddingHorizontal: 24,
+    gap: 12,
+    marginBottom: 24,
   },
 
- searchBar: {
+  searchBar: {
     flex: 1,
-     height: 52,
-     backgroundColor: "#2A2A2A",
-     borderRadius: 16,
+    height: 52,
+    backgroundColor: "#2A2A2A",
+    borderRadius: 16,
     //  extend the search icon and word on the left side
-     flexDirection: "row",
-     alignItems: "center",
-     paddingHorizontal: 16,
-     gap: 10,
- },
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 16,
+    gap: 10,
+  },
 
- searchInput:{
-   flex: 1,
-   color: "#FFFFFF", 
-   fontSize: 14,
- },
+  searchInput: {
+    flex: 1,
+    color: "#FFFFFF",
+    fontSize: 14,
+  },
 
-    filterButton: {
+  filterButton: {
     width: 52,
     height: 52,
     backgroundColor: "#C67C4E",
@@ -134,4 +161,54 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+
+bannerWrapper: {
+  paddingHorizontal: 24,
+  marginBottom: 28,
+},
+
+banner: {
+  height: 140,
+  borderRadius: 16,
+  padding: 16,
+  overflow: "hidden",
+  justifyContent: "flex-start", // Changed from "center"
+  // Remove marginHorizontal: 24
+},
+
+promoPill: {
+  position: "absolute",
+  top: 12, // Changed from 16
+  left: 16, // Changed from 20
+  backgroundColor: "#ED3140", // Changed from "#ED5151" to match Figma
+  borderRadius: 8,
+  paddingHorizontal: 12,
+  paddingVertical: 4,
+  zIndex: 2,
+},
+
+promoText: {
+  color: "#FFFFFF",
+  fontSize: 12,
+  fontWeight: "600",
+},
+
+bannerHeadline: {
+  color: "#FFFFFF",
+  fontSize: 20, // Changed from 24
+  fontWeight: "800",
+  lineHeight: 26, // Changed from 30
+  width: "60%",
+  zIndex: 2,
+  marginTop: 36, // Add this to push text below promo pill
+},
+
+bannerImage: {
+  position: "absolute",
+  right: 0, // Changed from -10
+  bottom: 0, // Keep as 0
+  width: 140,
+  height: 140,
+  resizeMode: "contain",
+},
 });
