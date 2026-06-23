@@ -177,9 +177,7 @@ export default function HomeScreen() {
   );
 }
 
-// ─────────────────────────────────────────────────────────────
-// STYLES
-// ─────────────────────────────────────────────────────────────
+
 const styles = StyleSheet.create({
   root: {
     flex: 1,
@@ -198,7 +196,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 
-  // ── Location ────────────────────────────────────────────────
+  // Location 
   locationRow: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -228,7 +226,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
 
-  // ── Search ──────────────────────────────────────────────────
+  //  Search 
   searchRow: {
     flexDirection: "row",
     paddingHorizontal: 24,
@@ -262,7 +260,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 
-  // ── Banner ──────────────────────────────────────────────────
+  //  Banner 
   bannerWrapper: {
     paddingHorizontal: 24,
     marginBottom: 24,
@@ -315,7 +313,7 @@ const styles = StyleSheet.create({
     lineHeight: 42,
   },
 
-  // ── Categories ──────────────────────────────────────────────
+  //  Categories 
   categoriesScroll: {
     marginBottom: 20,
   },
@@ -338,7 +336,7 @@ const styles = StyleSheet.create({
   categoryTextActive:   { color: "#FFFFFF" },
   categoryTextInactive: { color: "#313131" },
 
-  // ── Grid ────────────────────────────────────────────────────
+  // Grid 
   gridContent: {
     paddingHorizontal: 24,
     paddingBottom: 120, // clears the floating tab bar
@@ -349,7 +347,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
 
-  // ── Card ────────────────────────────────────────────────────
+  //  Card 
   card: {
     width: CARD_WIDTH,
     backgroundColor: "#FFFFFF",
@@ -411,4 +409,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+
+
+
 });
