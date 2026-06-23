@@ -13,52 +13,25 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
-import Banner from "../../assets/images/Banner.png";
+
+
+import Banner    from "../../assets/images/Banner.png";
+import CaffeMocha from "../../assets/images/2.png";
+import FlatWhite  from "../../assets/images/3.png";
+import Cappuccino from "../../assets/images/5.png";
+import Americano  from "../../assets/images/4.png";
 
 const { width } = Dimensions.get("window");
-
-const CARD_WIDTH = (width - 48 - 12) / 2;
-
+const CARD_WIDTH = (width - 48 - 12) / 2; // 24px padding each side + 12px gap
 
 const CATEGORIES = ["All Coffee", "Machiato", "Latte", "Americano"];
 
+// ── Coffee data with real images assigned ─────────────────────
 const COFFEES = [
-  {
-    id: "1",
-    name: "Caffe Mocha",
-    subtitle: "Deep Foam",
-    price: "4.53",
-    rating: "4.8",
-    // Replace with your image: require("../../assets/images/caffe-mocha.png")
-    image: null,
-  },
-  {
-    id: "2",
-    name: "Flat White",
-    subtitle: "Espresso",
-    price: "3.53",
-    rating: "4.8",
-    // Replace with your image: require("../../assets/images/flat-white.png")
-    image: null,
-  },
-  {
-    id: "3",
-    name: "Cappuccino",
-    subtitle: "with Oat Milk",
-    price: "4.20",
-    rating: "4.8",
-    // Replace with your image: require("../../assets/images/cappuccino.png")
-    image: null,
-  },
-  {
-    id: "4",
-    name: "Americano",
-    subtitle: "Black Bold",
-    price: "3.20",
-    rating: "4.8",
-    // Replace with your image: require("../../assets/images/americano.png")
-    image: null,
-  },
+  { id: "1", name: "Caffe Mocha",  subtitle: "Deep Foam",     price: "4.53", rating: "4.8", image: CaffeMocha  },
+  { id: "2", name: "Flat White",   subtitle: "Espresso",      price: "3.53", rating: "4.8", image: FlatWhite   },
+  { id: "3", name: "Cappuccino",   subtitle: "with Oat Milk", price: "4.20", rating: "4.8", image: Cappuccino  },
+  { id: "4", name: "Americano",    subtitle: "Black Bold",    price: "3.20", rating: "4.8", image: Americano   },
 ];
 
 function CoffeeCard({ item }) {
@@ -81,17 +54,11 @@ function CoffeeCard({ item }) {
           <Text style={styles.ratingText}>{item.rating}</Text>
         </View>
       </View>
- 
-      {/* Text content below the image */}
       <View style={styles.cardBody}>
         <Text style={styles.cardName}>{item.name}</Text>
         <Text style={styles.cardSubtitle}>{item.subtitle}</Text>
- 
-        {/* Price row: price on left, + button on right */}
         <View style={styles.cardFooter}>
           <Text style={styles.cardPrice}>$ {item.price}</Text>
- 
-          {/* Add to cart button */}
           <TouchableOpacity style={styles.addButton}>
             <Ionicons name="add" size={20} color="#FFFFFF" />
           </TouchableOpacity>
@@ -210,6 +177,9 @@ export default function HomeScreen() {
   );
 }
 
+// ─────────────────────────────────────────────────────────────
+// STYLES
+// ─────────────────────────────────────────────────────────────
 const styles = StyleSheet.create({
   root: {
     flex: 1,
@@ -228,6 +198,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 
+  // ── Location ────────────────────────────────────────────────
   locationRow: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -248,6 +219,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 6,
+    // marginBottom: 20,
   },
 
   locationValue: {
@@ -256,6 +228,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
 
+  // ── Search ──────────────────────────────────────────────────
   searchRow: {
     flexDirection: "row",
     paddingHorizontal: 24,
@@ -289,9 +262,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 
+  // ── Banner ──────────────────────────────────────────────────
   bannerWrapper: {
     paddingHorizontal: 24,
-    marginBottom: 28,
+    marginBottom: 24,
   },
 
   banner: {
@@ -315,7 +289,8 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     justifyContent: "center",
-    backgroundColor: "rgba(0,0,0,0.2)", // Optional: dark overlay for better text visibility
+    // Subtle dark tint so white text is readable regardless of banner image
+    backgroundColor: "rgba(0,0,0,0.15)",
   },
 
   promoPill: {
@@ -324,7 +299,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 4,
     alignSelf: "flex-start",
-    marginBottom: 6,
+    marginBottom: 8,
   },
 
   promoText: {
@@ -337,88 +312,66 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     fontSize: 32,
     fontWeight: "800",
-    lineHeight: 30,
+    lineHeight: 42,
   },
 
-    categoriesScroll: {
+  // ── Categories ──────────────────────────────────────────────
+  categoriesScroll: {
     marginBottom: 20,
   },
 
-    categoriesContent: {
+  categoriesContent: {
     paddingHorizontal: 24,
     gap: 10,
   },
 
-    categoryPill: {
+  categoryPill: {
     paddingHorizontal: 18,
     paddingVertical: 10,
     borderRadius: 20,
   },
 
-   categoryPillActive: {
-    backgroundColor: "#C67C4E",
-  },
+  categoryPillActive:   { backgroundColor: "#C67C4E" },
+  categoryPillInactive: { backgroundColor: "#EDEDED" },
 
-   categoryPillInactive: {
-    backgroundColor: "#EDEDED",
-  },
+  categoryText:         { fontSize: 13, fontWeight: "600" },
+  categoryTextActive:   { color: "#FFFFFF" },
+  categoryTextInactive: { color: "#313131" },
 
-  categoryText: {
-    fontSize: 13,
-    fontWeight: "600",
-  },
-
-  categoryTextActive: {
-    color: "#FFFFFF",
-  },
-
-   categoryTextInactive: {
-    color: "#313131",
-  },
-
-    gridContent: {
+  // ── Grid ────────────────────────────────────────────────────
+  gridContent: {
     paddingHorizontal: 24,
+    paddingBottom: 120, // clears the floating tab bar
   },
- 
-  // Each row in the 2-column grid
+
   gridRow: {
     justifyContent: "space-between",
     marginBottom: 16,
   },
 
-    card: {
+  // ── Card ────────────────────────────────────────────────────
+  card: {
     width: CARD_WIDTH,
     backgroundColor: "#FFFFFF",
     borderRadius: 16,
     overflow: "hidden",
-    // Subtle card shadow
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.07,
     shadowRadius: 8,
     elevation: 3,
   },
- 
+
   cardImageWrapper: {
     width: "100%",
-    height: CARD_WIDTH, // square image area
-    backgroundColor: "#2A2A2A",
+    height: CARD_WIDTH,
   },
- 
+
   cardImage: {
     width: "100%",
     height: "100%",
   },
- 
-  // Grey box shown when no image is provided yet
-  cardImagePlaceholder: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#1E1E1E",
-  },
- 
-  // Star + number badge in top-right of image
+
   ratingBadge: {
     position: "absolute",
     top: 8,
@@ -431,44 +384,25 @@ const styles = StyleSheet.create({
     paddingHorizontal: 6,
     paddingVertical: 3,
   },
- 
+
   ratingText: {
     color: "#FFFFFF",
     fontSize: 10,
     fontWeight: "600",
   },
- 
-  cardBody: {
-    padding: 12,
-  },
- 
-  cardName: {
-    color: "#1A1A1A",
-    fontSize: 14,
-    fontWeight: "700",
-    marginBottom: 2,
-  },
- 
-  cardSubtitle: {
-    color: "#A2A2A2",
-    fontSize: 12,
-    fontWeight: "400",
-    marginBottom: 10,
-  },
- 
+
+  cardBody:     { padding: 12 },
+  cardName:     { color: "#1A1A1A", fontSize: 14, fontWeight: "700", marginBottom: 2 },
+  cardSubtitle: { color: "#A2A2A2", fontSize: 12, fontWeight: "400", marginBottom: 10 },
+
   cardFooter: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
   },
- 
-  cardPrice: {
-    color: "#1A1A1A",
-    fontSize: 16,
-    fontWeight: "700",
-  },
- 
-  // Small square orange + button
+
+  cardPrice: { color: "#1A1A1A", fontSize: 16, fontWeight: "700" },
+
   addButton: {
     width: 32,
     height: 32,
@@ -477,5 +411,4 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-
 });
