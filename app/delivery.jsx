@@ -15,7 +15,9 @@ import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import Maps    from "../assets/images/Maps.png";
 import Profile from "../assets/images/Profile.png";
 import CallIcon from "../assets/images/call-icon.png";
-
+import Location from "../assets/images/Location.png";
+import LocationBiker from "../assets/images/location-biker.png";
+import Biker from "../assets/images/Bike.png";
 const { width, height } = Dimensions.get("window");
 
 // true = green (done), false = grey (pending)
@@ -43,6 +45,41 @@ export default function DeliveryScreen() {
         style={styles.mapImage}
         resizeMode="cover"
       />
+
+
+      {/* Route overlay */}
+{/* <View style={styles.routeContainer}> */}
+  {/* Horizontal along 86th Street from pin to Nehru Road */}
+  {/* <View style={[styles.routeSeg, {
+    height: 4, width: '22%',
+    top: 172, left: '38%',
+  }]} /> */}
+  {/* Vertical down Nehru Road to biker */}
+  {/* <View style={[styles.routeSeg, {
+    width: 4, height: 60,
+    top: 172, left: '59.5%',
+  }]} />
+</View> */}
+
+<View style={styles.routeContainer}>
+  <View style={styles.routeVerticalLeft} />
+  <View style={styles.routeHorizontalTop} />
+  <View style={styles.routeVerticalRight} />
+</View>
+
+{/* Destination marker */}
+<Image
+  source={Location}
+  style={styles.locationMarker}
+  resizeMode="contain"
+/>
+
+{/* Biker marker on route */}
+<Image
+  source={LocationBiker}
+  style={styles.bikerMarker}
+  resizeMode="contain"
+/>
 
       {/* ── FLOATING BUTTONS — sit above the map via position absolute ── */}
       <View style={styles.topControls}>
@@ -104,7 +141,7 @@ export default function DeliveryScreen() {
             padding: 8 16 8 12, gap 16                                   */}
         <View style={styles.statusCard}>
           <View style={styles.bikeIconBox}>
-            <MaterialCommunityIcons name="moped" size={28} color="#C67C4E" />
+            <Image source={Biker} style={styles.statusBikeIcon} resizeMode="contain" />
           </View>
 
           <View style={styles.statusTextWrapper}>
@@ -142,7 +179,7 @@ export default function DeliveryScreen() {
           */}
           <TouchableOpacity style={styles.callBtn}>
             {/* <Ionicons name="call-outline" size={20} color="#1A1A1A" /> */}
-            <Image source={CallIcon} style={{ width: 22, height: 22 }} />
+            <Image source={CallIcon} style={{ width: 44, height: 44 }} />
           </TouchableOpacity>
         </View>
 
@@ -154,7 +191,7 @@ export default function DeliveryScreen() {
 }
 
 // ─── Styles ──────────────────────────────────────────────────────────────────
-const MAP_HEIGHT = height * 0.45;
+const MAP_HEIGHT = height * 0.60;
 
 const styles = StyleSheet.create({
 
@@ -273,7 +310,8 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 12,
-    backgroundColor: "#FFF6F0",
+    borderColor:"#E3E3E3",
+    // backgroundColor: "#FFF6F0",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -330,8 +368,6 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: 12,
-    borderWidth: 1.5,
-    borderColor: "#E0E0E0",
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#FFFFFF",
@@ -349,4 +385,73 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     backgroundColor: "#242424",
   },
+
+ routeContainer: {
+  position: 'absolute',
+  top: 0, left: 0, right: 0,
+  height: MAP_HEIGHT,
+  zIndex: 1,
+},
+
+// Left vertical — goes up from location marker
+routeVerticalLeft: {
+  position: 'absolute',
+  backgroundColor: '#C67C4E',
+  borderRadius: 100,
+  width: 4,
+  height: 69,
+  top: 135,
+  left: '19.6%',
+},
+
+// Top horizontal — travels right across the map
+routeHorizontalTop: {
+  position: 'absolute',
+  backgroundColor: '#C67C4E',
+  borderRadius: 100,
+  height: 4,
+  width: '45%',
+  top: 135,
+  left: '19.5%',
+},
+
+// Right vertical — goes down to biker
+routeVerticalRight: {
+  position: 'absolute',
+  backgroundColor: '#C67C4E',
+  borderRadius: 100,
+  width: 4,
+  height: 157,
+  top: 136,
+  left: '64%',
+},
+routeSeg: {
+  position: 'absolute',
+  backgroundColor: '#C67C4E',
+  borderRadius: 100,
+},
+
+
+locationMarker: {
+  position: 'absolute',
+  width: 36,
+  height: 38,
+  top: 195,
+  left: '16%',
+  zIndex: 3,
+},
+
+bikerMarker: {
+  position: 'absolute',
+  width: 40,
+  height: 40,
+  top: 292,
+  left: '60%',
+  zIndex: 3,
+},
+
+statusBikeIcon: {
+  width: 28,
+  height: 28,
+},
 });
