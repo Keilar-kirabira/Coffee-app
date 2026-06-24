@@ -125,7 +125,9 @@ export default function DetailScreen() {
                 <Text style={styles.priceLabel}>Price</Text>
                 <Text style={styles.price}>$ {coffee.price}</Text>
               </View>
-              <TouchableOpacity style={styles.buyButton}>
+              <TouchableOpacity style={styles.buyButton}
+              onPress={() => router.push({ pathname: "/order", params: { id: coffee.id, size: selectedSize } })}
+              >
                 <Text style={styles.buyButtonText}>Buy Now</Text>
               </TouchableOpacity>
             </View>
