@@ -8,19 +8,30 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
+import { StatusBar } from "expo-status-bar";
 import { useRouter } from "expo-router";
-
+import { useFonts, Sora_400Regular, Sora_600SemiBold } from "@expo-google-fonts/sora";
 
 const { width, height } = Dimensions.get("window");
 
 
-const HERO_HEIGHT = height * 0.58;
+const HERO_HEIGHT = height * 0.68;
 
 export default function OnboardingScreen() {
   const router = useRouter();
 
+    const [fontsLoaded] = useFonts({
+    Sora_400Regular,
+    Sora_600SemiBold,
+  });
+
+  if (!fontsLoaded) return <View style={{ flex: 1, backgroundColor: "#050505" }} />;
+
+
   return (
     <View style={styles.root}>
+      {/* show the status bar */}
+      <StatusBar style="light" translucent backgroundColor="transparent" />
 
    
       <Image
@@ -31,9 +42,10 @@ export default function OnboardingScreen() {
 
      
       <LinearGradient
-        colors={["transparent", "#050505"]}
-        style={styles.overlay}
-      />
+  colors={["transparent", "rgba(5,5,5,0.6)", "#050505"]}
+  locations={[0, 0.5, 1]}
+  style={styles.overlay}
+/>
 
      
       <SafeAreaView style={styles.safe} edges={["top", "bottom"]}>
@@ -77,7 +89,7 @@ const styles = StyleSheet.create({
   // Image is pinned to top-left, fills full width, 58% of screen height
   heroImage: {
     position: "absolute",
-    top: 0,
+    top: 40,
     left: 0,
     width: width,
     height: HERO_HEIGHT,
@@ -86,10 +98,10 @@ const styles = StyleSheet.create({
   // Overlay sits at the bottom half of the hero image and fades to black
   overlay: {
     position: "absolute",
-    top: HERO_HEIGHT * 0.5,   // starts halfway through the image
+    top: HERO_HEIGHT * 0.72,   // starts halfway through the image
     left: 0,
     right: 0,
-    height: HERO_HEIGHT * 0.6, // tall enough to fully cover the fade zone
+    height: HERO_HEIGHT * 0.35, // tall enough to fully cover the fade zone
   },
 
   // SafeAreaView fills all remaining space, with side padding
@@ -100,32 +112,35 @@ const styles = StyleSheet.create({
 
   // Pushes all content below the hero image
   spacer: {
-    height: HERO_HEIGHT - 40, // -40 so text slightly overlaps the image bottom
+    height: HERO_HEIGHT - 60, 
   },
 
   heading: {
     color: "#FFFFFF",
+    fontFamily: "Sora_600SemiBold",
     fontSize: 32,
-    fontWeight: "700",
+    lineHeight: 48,
+    letterSpacing: 0.16,
     textAlign: "center",
-    lineHeight: 42,
     marginBottom: 14,
   },
 
   subheading: {
     color: "#A2A2A2",
+    fontFamily: "Sora_400Regular",
     fontSize: 14,
-    fontWeight: "400",
+    lineHeight: 21,
+    letterSpacing: 0.14,
     textAlign: "center",
-    lineHeight: 22,
     marginBottom: 36,
   },
 
   button: {
     backgroundColor: "#C67C4E",
-    borderRadius: 18,
+    borderRadius: 16,
     paddingVertical: 18,
     alignItems: "center",
+     marginBottom: 24,
   },
 
   buttonText: {
