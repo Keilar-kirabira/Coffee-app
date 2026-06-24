@@ -211,7 +211,8 @@ export default function OrderScreen() {
 
       {/* ── Fixed Order Button ── */}
       <View style={styles.bottomBar}>
-        <TouchableOpacity style={styles.orderBtn}>
+        <TouchableOpacity style={styles.orderBtn}
+        onPress={() => router.push("/delivery")}>
           <Text style={styles.orderBtnText}>Order</Text>
         </TouchableOpacity>
       </View>
