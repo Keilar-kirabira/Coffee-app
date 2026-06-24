@@ -57,7 +57,7 @@ export default function OrderScreen() {
         {/* ── Top Bar ── */}
         <View style={styles.topBar}>
           <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
-            <Ionicons name="chevron-back" size={22} color="#1A1A1A" />
+            <Ionicons name="chevron-back" size={22} color="#2A2A2A" />
           </TouchableOpacity>
           <Text style={styles.screenTitle}>Order</Text>
           {/* spacer */}
@@ -224,7 +224,7 @@ export default function OrderScreen() {
 }
 
 const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: "#F9F2EC" },
+  root: { flex: 1, backgroundColor: "#F9F9F9" },
   safe: { flex: 1 },
 
   // ── Top Bar ──
@@ -234,13 +234,12 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: 16,
     paddingVertical: 12,
-    backgroundColor: "#F9F2EC",
+    
   },
   backBtn: {
     width: 40,
     height: 40,
     borderRadius: 12,
-    backgroundColor: "#FFFFFF",
     alignItems: "center",
     justifyContent: "center",
   },

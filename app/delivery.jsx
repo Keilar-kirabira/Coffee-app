@@ -1,5 +1,3 @@
-
-
 import {
   View,
   Text,
@@ -18,6 +16,8 @@ import CallIcon from "../assets/images/call-icon.png";
 import Location from "../assets/images/Location.png";
 import LocationBiker from "../assets/images/location-biker.png";
 import Biker from "../assets/images/Bike.png";
+import Favourite from "../assets/images/Favourite.png"; // NEW IMPORT
+
 const { width, height } = Dimensions.get("window");
 
 // true = green (done), false = grey (pending)
@@ -46,60 +46,44 @@ export default function DeliveryScreen() {
         resizeMode="cover"
       />
 
+      <View style={styles.routeContainer}>
+        <View style={styles.routeVerticalLeft} />
+        <View style={styles.routeHorizontalTop} />
+        <View style={styles.routeVerticalRight} />
+      </View>
 
-      {/* Route overlay */}
-{/* <View style={styles.routeContainer}> */}
-  {/* Horizontal along 86th Street from pin to Nehru Road */}
-  {/* <View style={[styles.routeSeg, {
-    height: 4, width: '22%',
-    top: 172, left: '38%',
-  }]} /> */}
-  {/* Vertical down Nehru Road to biker */}
-  {/* <View style={[styles.routeSeg, {
-    width: 4, height: 60,
-    top: 172, left: '59.5%',
-  }]} />
-</View> */}
+      {/* Destination marker */}
+      <Image
+        source={Location}
+        style={styles.locationMarker}
+        resizeMode="contain"
+      />
 
-<View style={styles.routeContainer}>
-  <View style={styles.routeVerticalLeft} />
-  <View style={styles.routeHorizontalTop} />
-  <View style={styles.routeVerticalRight} />
-</View>
-
-{/* Destination marker */}
-<Image
-  source={Location}
-  style={styles.locationMarker}
-  resizeMode="contain"
-/>
-
-{/* Biker marker on route */}
-<Image
-  source={LocationBiker}
-  style={styles.bikerMarker}
-  resizeMode="contain"
-/>
+      {/* Biker marker on route */}
+      <Image
+        source={LocationBiker}
+        style={styles.bikerMarker}
+        resizeMode="contain"
+      />
 
       {/* ── FLOATING BUTTONS — sit above the map via position absolute ── */}
       <View style={styles.topControls}>
-        <TouchableOpacity
-          style={styles.floatBtn}
-          onPress={() => router.back()}
-        >
-          <Ionicons name="chevron-back" size={20} color="#1A1A1A" />
-        </TouchableOpacity>
+<TouchableOpacity
+  style={styles.floatBtn}
+  onPress={() => {
+    console.log("BACK BUTTON PRESSED");
+    router.back();
+  }}
+>
+  <Ionicons name="chevron-back" size={20} color="#1A1A1A" />
+</TouchableOpacity>
 
-        <TouchableOpacity style={styles.floatBtn}>
-          {/*
-            The Figma location button uses a crosshair/target icon.
-            "locate-outline" in Ionicons is the closest match —
-            it renders as a circle with crosshair lines, identical
-            to the Figma design. If you want pixel-perfect match,
-            export the icon from Figma as an SVG and wrap it in
-            an <Image> component instead.
-          */}
-          <Ionicons name="locate-outline" size={20} color="#1A1A1A" />
+        <TouchableOpacity style={[styles.floatBtn, styles.favouriteBtn]}>
+          <Image 
+            source={Favourite} 
+            style={styles.favouriteIcon} 
+            resizeMode="contain"
+          />
         </TouchableOpacity>
       </View>
 
@@ -111,13 +95,10 @@ export default function DeliveryScreen() {
           <View style={styles.dragIndicator} />
         </View>
 
-        {/* ── DELIVERY TIME ──
-            Figma: Sora SemiBold 16px, color #242424, line-height 150%  */}
+        {/* ── DELIVERY TIME ── */}
         <Text style={styles.timeText}>10 minutes left</Text>
 
-        {/* ── DELIVERY ADDRESS ──
-            Figma: Sora Regular 12px, line-height 150%
-            "Jl. Kpg Sutoyo" is bold via nested <Text>                  */}
+        {/* ── DELIVERY ADDRESS ── */}
         <Text style={styles.destinationText}>
           Delivery to{" "}
           <Text style={styles.destinationBold}>Jl. Kpg Sutoyo</Text>
@@ -136,27 +117,21 @@ export default function DeliveryScreen() {
           ))}
         </View>
 
-        {/* ── DELIVERY STATUS CARD ──
-            Figma: 327×77, border-radius 12, border 1px #E3E3E3
-            padding: 8 16 8 12, gap 16                                   */}
+        {/* ── DELIVERY STATUS CARD ── */}
         <View style={styles.statusCard}>
           <View style={styles.bikeIconBox}>
             <Image source={Biker} style={styles.statusBikeIcon} resizeMode="contain" />
           </View>
 
           <View style={styles.statusTextWrapper}>
-            {/* Figma: Sora SemiBold 14px, color #242424 */}
             <Text style={styles.statusTitle}>Delivered your order</Text>
-            {/* Figma: Sora Light 12px, color #A2A2A2, line-height 150% */}
             <Text style={styles.statusDesc}>
               We will deliver your goods to you in the shortest possible time.
             </Text>
           </View>
         </View>
 
-        {/* ── COURIER ROW ──
-            Figma: 327×56, gap 76 between avatar and name block
-            No card/border — just a flat row                             */}
+        {/* ── COURIER ROW ── */}
         <View style={styles.courierRow}>
           <Image source={Profile} style={styles.courierAvatar} />
 
@@ -165,20 +140,7 @@ export default function DeliveryScreen() {
             <Text style={styles.courierRole}>Personal Courier</Text>
           </View>
 
-          {/*
-            CALL BUTTON ICON:
-            The Figma icon is a phone handset with a circular arrow/signal
-            arc around it — this is "call-outline" in Ionicons which renders
-            as exactly that shape. If it still doesn't match, the alternative
-            is to export the icon SVG from Figma and use it as a local image:
-
-              import CallIcon from "../assets/images/call-icon.png";
-              <Image source={CallIcon} style={{ width: 22, height: 22 }} />
-
-            That gives you a pixel-perfect match.
-          */}
           <TouchableOpacity style={styles.callBtn}>
-            {/* <Ionicons name="call-outline" size={20} color="#1A1A1A" /> */}
             <Image source={CallIcon} style={{ width: 44, height: 44 }} />
           </TouchableOpacity>
         </View>
@@ -191,7 +153,7 @@ export default function DeliveryScreen() {
 }
 
 // ─── Styles ──────────────────────────────────────────────────────────────────
-const MAP_HEIGHT = height * 0.60;
+const MAP_HEIGHT = height * 0.62;
 
 const styles = StyleSheet.create({
 
@@ -214,6 +176,7 @@ const styles = StyleSheet.create({
     right: 16,
     flexDirection: "row",
     justifyContent: "space-between",
+    zIndex: 10,
   },
   floatBtn: {
     width: 44,
@@ -223,6 +186,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  // NEW STYLES FOR FAVOURITE BUTTON
+  favouriteBtn: {
+    padding: 10,
+  },
+  favouriteIcon: {
+    width: 44,
+    height: 44,
+    borderRadius: 12,
+  },
 
   // ── Bottom Sheet ──
   sheet: {
@@ -231,7 +203,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     marginTop: -24,
-    paddingHorizontal: 24,   // matches Figma left: 24px on cards
+    paddingHorizontal: 24,
     paddingTop: 14,
     paddingBottom: 8,
   },
@@ -249,22 +221,20 @@ const styles = StyleSheet.create({
   },
 
   // ── Delivery Time ──
-  // Figma: Sora SemiBold 16px, color #242424, line-height 150%
   timeText: {
     fontFamily: "Sora_600SemiBold",
     fontSize: 16,
-    lineHeight: 24,           // 16 * 1.5 = 24
+    lineHeight: 24,
     color: "#242424",
     textAlign: "center",
     marginBottom: 4,
   },
 
   // ── Delivery Address ──
-  // Figma: Sora Regular 12px, line-height 150%
   destinationText: {
     fontFamily: "Sora_400Regular",
     fontSize: 12,
-    lineHeight: 18,           // 12 * 1.5 = 18
+    lineHeight: 18,
     color: "#242424",
     textAlign: "center",
     marginBottom: 16,
@@ -279,7 +249,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 8,
     justifyContent: "center",
-    marginBottom: 8,         // reduced — closes the gap to the status card
+    marginBottom: 8,
   },
   progressBar: {
     width: 71.25,
@@ -290,20 +260,18 @@ const styles = StyleSheet.create({
   progressInactive: { backgroundColor: "#E3E3E3" },
 
   // ── Status Card ──
-  // Figma: 327×77, border-radius 12, border 1px #E3E3E3
-  // padding: top 8, right 16, bottom 8, left 12 — gap 16
   statusCard: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 16,                  // Figma gap: 16
-    borderRadius: 12,         // Figma border-radius: 12
+    gap: 16,
+    borderRadius: 12,
     borderWidth: 1,
-    borderColor: "#E3E3E3",   // Figma border: 1px solid #E3E3E3
-    paddingTop: 8,            // Figma padding-top: 8
-    paddingRight: 16,         // Figma padding-right: 16
-    paddingBottom: 8,         // Figma padding-bottom: 8
-    paddingLeft: 12,          // Figma padding-left: 12
-    marginBottom: 20,         // tight gap to courier row below
+    borderColor: "#E3E3E3",
+    paddingTop: 8,
+    paddingRight: 16,
+    paddingBottom: 8,
+    paddingLeft: 12,
+    marginBottom: 20,
     backgroundColor: "#FFFFFF",
   },
   bikeIconBox: {
@@ -311,44 +279,37 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 12,
     borderColor:"#E3E3E3",
-    // backgroundColor: "#FFF6F0",
     alignItems: "center",
     justifyContent: "center",
   },
   statusTextWrapper: {
     flex: 1,
   },
-  // Figma: Sora SemiBold 14px, color #242424
   statusTitle: {
     fontFamily: "Sora_600SemiBold",
     fontSize: 14,
-    lineHeight: 21,           // 14 * 1.5
+    lineHeight: 21,
     color: "#242424",
     marginBottom: 2,
   },
-  // Figma: Sora Light 12px, color #A2A2A2, line-height 150%
   statusDesc: {
     fontFamily: "Sora_300Light",
     fontSize: 12,
-    lineHeight: 18,           // 12 * 1.5
+    lineHeight: 18,
     color: "#A2A2A2",
   },
 
   // ── Courier Row ──
-  // Figma: 327×56, no border/card, gap 76 between left block and call btn
   courierRow: {
     flexDirection: "row",
     alignItems: "center",
     gap: 12,
-    
   },
   courierAvatar: {
     width: 52,
     height: 52,
     borderRadius: 14,
   },
-  // flex: 1 fills the space — combined with the fixed callBtn width this
-  // naturally produces the ~76px visual gap the Figma specifies
   courierInfo: {
     flex: 1,
   },
@@ -363,7 +324,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "#A2A2A2",
   },
-  // Outlined square button — white bg, light border
   callBtn: {
     width: 48,
     height: 48,
@@ -386,72 +346,63 @@ const styles = StyleSheet.create({
     backgroundColor: "#242424",
   },
 
- routeContainer: {
-  position: 'absolute',
-  top: 0, left: 0, right: 0,
-  height: MAP_HEIGHT,
-  zIndex: 1,
-},
+  routeContainer: {
+    position: 'absolute',
+    top: 0, left: 0, right: 0,
+    height: MAP_HEIGHT,
+    zIndex: 1,
+  },
 
-// Left vertical — goes up from location marker
-routeVerticalLeft: {
-  position: 'absolute',
-  backgroundColor: '#C67C4E',
-  borderRadius: 100,
-  width: 4,
-  height: 83,
-  top: 110,
-  left: '19.6%',
-},
+  routeVerticalLeft: {
+    position: 'absolute',
+    backgroundColor: '#C67C4E',
+    borderRadius: 100,
+    width: 4,
+    height: 83,
+    top: 110,
+    left: '19.6%',
+  },
 
-// Top horizontal — travels right across the map
-routeHorizontalTop: {
-  position: 'absolute',
-  backgroundColor: '#C67C4E',
-  borderRadius: 100,
-  height: 4,
-  width: '51%',
-  top: 110,
-  left: '19.5%',
-},
+  routeHorizontalTop: {
+    position: 'absolute',
+    backgroundColor: '#C67C4E',
+    borderRadius: 100,
+    height: 4,
+    width: '51%',
+    top: 110,
+    left: '19.5%',
+  },
 
-// Right vertical — goes down to biker
-routeVerticalRight: {
-  position: 'absolute',
-  backgroundColor: '#C67C4E',
-  borderRadius: 100,
-  width: 4,
-  height: 182,
-  top: 110,
-  left: '70%',
-},
-routeSeg: {
-  position: 'absolute',
-  backgroundColor: '#C67C4E',
-  borderRadius: 100,
-},
+  routeVerticalRight: {
+    position: 'absolute',
+    backgroundColor: '#C67C4E',
+    borderRadius: 100,
+    width: 4,
+    height: 182,
+    top: 110,
+    left: '70%',
+  },
 
+  locationMarker: {
+    position: 'absolute',
+    width: 36,
+    height: 38,
+    top: 195,
+    left: '15%',
+    zIndex: 3,
+  },
 
-locationMarker: {
-  position: 'absolute',
-  width: 36,
-  height: 38,
-  top: 195,
-  left: '15%',
-  zIndex: 3,
-},
+  bikerMarker: {
+    position: 'absolute',
+    width: 40,
+    height: 40,
+    top: 292,
+    left: '65%',
+    zIndex: 3,
+  },
 
-bikerMarker: {
-  position: 'absolute',
-  width: 40,
-  height: 40,
-  top: 292,
-  left: '65%',
-  zIndex: 3,
-},
-
-statusBikeIcon: {
-  width: 28,
-  height: 28,
-},
+  statusBikeIcon: {
+    width: 28,
+    height: 28,
+  },
 });
