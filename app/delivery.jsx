@@ -399,8 +399,8 @@ routeVerticalLeft: {
   backgroundColor: '#C67C4E',
   borderRadius: 100,
   width: 4,
-  height: 69,
-  top: 135,
+  height: 83,
+  top: 110,
   left: '19.6%',
 },
 
@@ -410,8 +410,8 @@ routeHorizontalTop: {
   backgroundColor: '#C67C4E',
   borderRadius: 100,
   height: 4,
-  width: '45%',
-  top: 135,
+  width: '51%',
+  top: 110,
   left: '19.5%',
 },
 
@@ -421,9 +421,9 @@ routeVerticalRight: {
   backgroundColor: '#C67C4E',
   borderRadius: 100,
   width: 4,
-  height: 157,
-  top: 136,
-  left: '64%',
+  height: 182,
+  top: 110,
+  left: '70%',
 },
 routeSeg: {
   position: 'absolute',
@@ -437,7 +437,7 @@ locationMarker: {
   width: 36,
   height: 38,
   top: 195,
-  left: '16%',
+  left: '15%',
   zIndex: 3,
 },
 
@@ -446,7 +446,7 @@ bikerMarker: {
   width: 40,
   height: 40,
   top: 292,
-  left: '60%',
+  left: '65%',
   zIndex: 3,
 },
 
