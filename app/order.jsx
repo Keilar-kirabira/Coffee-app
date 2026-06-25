@@ -118,7 +118,7 @@ export default function OrderScreen() {
               <View style={styles.itemInfo}>
                 <Text style={styles.itemName}>{coffee.name}</Text>
                 <Text style={styles.itemSub}>{coffee.subtitle}</Text>
-                {size ? <Text style={styles.itemSize}>Size: {size}</Text> : null}
+                
               </View>
               {/* Quantity Selector */}
               <View style={styles.qtyRow}>
