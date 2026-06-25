@@ -4,7 +4,6 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  ScrollView,
   FlatList,
   Image,
   Dimensions,
@@ -13,35 +12,38 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
-
 import { useRouter } from "expo-router";
 
-
-import Banner    from "../../assets/images/Banner.png";
+// ── Images ────────────────────────────────────────────────────
+import Banner     from "../../assets/images/Banner.png";
 import CaffeMocha from "../../assets/images/2.png";
 import FlatWhite  from "../../assets/images/3.png";
 import Cappuccino from "../../assets/images/5.png";
 import Americano  from "../../assets/images/4.png";
 
+// ── Custom Figma icon ─────────────────────────────────────────
+import FiletIcon from "../../assets/images/Filet.png";
+
 const { width } = Dimensions.get("window");
-const CARD_WIDTH = (width - 48 - 12) / 2; // 24px padding each side + 12px gap
+const CARD_WIDTH = 156;
+const CARD_HEIGHT = 238;
 
 const CATEGORIES = ["All Coffee", "Machiato", "Latte", "Americano"];
 
-// ── Coffee data with real images assigned ─────────────────────
 const COFFEES = [
-  { id: "1", name: "Caffe Mocha",  subtitle: "Deep Foam",     price: "4.53", rating: "4.8", image: CaffeMocha  },
-  { id: "2", name: "Flat White",   subtitle: "Espresso",      price: "3.53", rating: "4.8", image: FlatWhite   },
-  { id: "3", name: "Cappuccino",   subtitle: "with Oat Milk", price: "4.20", rating: "4.8", image: Cappuccino  },
-  { id: "4", name: "Americano",    subtitle: "Black Bold",    price: "3.20", rating: "4.8", image: Americano   },
+  { id: "1", name: "Caffe Mocha",  subtitle: "Deep Foam",     price: "4.53", rating: "4.8", image: CaffeMocha },
+  { id: "2", name: "Flat White",   subtitle: "Espresso",      price: "3.53", rating: "4.8", image: FlatWhite  },
+  { id: "3", name: "Cappuccino",   subtitle: "with Oat Milk", price: "4.20", rating: "4.8", image: Cappuccino },
+  { id: "4", name: "Americano",    subtitle: "Black Bold",    price: "3.20", rating: "4.8", image: Americano  },
 ];
 
+// ── Coffee card ───────────────────────────────────────────────
 function CoffeeCard({ item, onPress }) {
   return (
     <TouchableOpacity
       onPress={onPress}
       activeOpacity={0.7}
-      style={styles.card}   // ← style goes here now
+      style={styles.card}
     >
       <View style={styles.cardImageWrapper}>
         {item.image ? (
@@ -70,21 +72,63 @@ function CoffeeCard({ item, onPress }) {
   );
 }
 
-
 export default function HomeScreen() {
-  const router = useRouter(); 
+  const router = useRouter();
   const [activeCategory, setActiveCategory] = useState("All Coffee");
-
   const [search, setSearch] = useState("");
+
+  // ── Fixed header rendered above the FlatList ───────────────
+  const ListHeader = () => (
+    <>
+      {/* Categories */}
+      <FlatList
+        data={CATEGORIES}
+        keyExtractor={(cat) => cat}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={styles.categoriesScroll}
+        contentContainerStyle={styles.categoriesContent}
+        renderItem={({ item: cat }) => {
+          const isActive = cat === activeCategory;
+          return (
+            <TouchableOpacity
+              style={[
+                styles.categoryPill,
+                isActive ? styles.categoryPillActive : styles.categoryPillInactive,
+              ]}
+              onPress={() => setActiveCategory(cat)}
+            >
+              <Text
+                style={[
+                  styles.categoryText,
+                  isActive ? styles.categoryTextActive : styles.categoryTextInactive,
+                ]}
+              >
+                {cat}
+              </Text>
+            </TouchableOpacity>
+          );
+        }}
+      />
+    </>
+  );
+
   return (
+    // 1. Root is plain #F9F9F9 — no gradient here
     <View style={styles.root}>
+
+      {/* 2. Dark gradient covers only the header area */}
       <LinearGradient
-        colors={["#1A1A1A", "#1A1A1A", "#F9F9F9"]}
-        locations={[0, 0.72, 1]}
+        colors={["#1A1A1A", "#1A1A1A", "#1A1A1A"]}
         style={styles.headerGradient}
       />
+
       <SafeAreaView style={styles.safe} edges={["top"]}>
-        <ScrollView>
+
+        {/* ── FIXED HEADER ──────────────────────────────────── */}
+        <View style={styles.fixedHeader}>
+
+          {/* Location */}
           <View style={styles.locationRow}>
             <View>
               <Text style={styles.locationLabel}>Location</Text>
@@ -94,6 +138,8 @@ export default function HomeScreen() {
               </TouchableOpacity>
             </View>
           </View>
+
+          {/* Search */}
           <View style={styles.searchRow}>
             <View style={styles.searchBar}>
               <Ionicons name="search" size={20} color="white" />
@@ -105,11 +151,13 @@ export default function HomeScreen() {
                 onChangeText={setSearch}
               />
             </View>
+            {/* 3. Replaced Ionicons filter icon with Figma PNG */}
             <TouchableOpacity style={styles.filterButton}>
-              <Ionicons name="options-outline" size={22} color="#FFFFFF" />
+              <Image source={FiletIcon} style={styles.filterIcon} resizeMode="contain" />
             </TouchableOpacity>
           </View>
 
+          {/* Banner */}
           <View style={styles.bannerWrapper}>
             <View style={styles.banner}>
               <Image
@@ -117,76 +165,65 @@ export default function HomeScreen() {
                 style={styles.bannerBackgroundImage}
                 resizeMode="cover"
               />
-              <View style={styles.bannerOverlay}>
+              {/*
+                4. Removed the semi-transparent overlay View that was
+                   creating the unwanted dark block over the banner image.
+                   The promo pill and headline sit directly on the image.
+              */}
+              <View style={styles.bannerContent}>
                 <View style={styles.promoPill}>
                   <Text style={styles.promoText}>Promo</Text>
                 </View>
-                <Text style={styles.bannerHeadline}>
-                  Buy one get{"\n"}one FREE
-                </Text>
+
+                {/*
+                  5. Each line gets its own tight black background.
+                     We split the headline into two separate Text nodes,
+                     each wrapped in a View with alignSelf="flex-start"
+                     so the black bg hugs only the text width.
+                */}
+                <View style={styles.headlineWrapper}>
+                  <View style={styles.headlineLine}>
+                    <Text style={styles.bannerHeadline}>Buy one get</Text>
+                  </View>
+                  <View style={styles.headlineLine}>
+                    <Text style={styles.bannerHeadline}>one FREE</Text>
+                  </View>
+                </View>
               </View>
             </View>
           </View>
+        </View>
 
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            style={styles.categoriesScroll}
-            contentContainerStyle={styles.categoriesContent}
-          >
-            {CATEGORIES.map((cat) => {
-              const isActive = cat === activeCategory;
-              return (
-                <TouchableOpacity
-                  key={cat}
-                  style={[
-                    styles.categoryPill,
-                    isActive
-                      ? styles.categoryPillActive
-                      : styles.categoryPillInactive,
-                  ]}
-                  onPress={() => setActiveCategory(cat)}
-                >
-                  <Text
-                    style={[
-                      styles.categoryText,
-                      isActive
-                        ? styles.categoryTextActive
-                        : styles.categoryTextInactive,
-                    ]}
-                  >
-                    {cat}
-                  </Text>
-                </TouchableOpacity>
-              );
-            })}
-          </ScrollView>
+        {/* ── SCROLLABLE GRID with categories as ListHeaderComponent ── */}
+        <FlatList
+          data={COFFEES}
+          keyExtractor={(item) => item.id}
+          numColumns={2}
+          ListHeaderComponent={<ListHeader />}
+          columnWrapperStyle={styles.gridRow}
+          contentContainerStyle={styles.gridContent}
+          showsVerticalScrollIndicator={false}
+          renderItem={({ item }) => (
+            <CoffeeCard
+              item={item}
+              onPress={() => router.push(`/detail/${item.id}`)}
+            />
+          )}
+        />
 
-          {/* COFFE GRID */}
-                    <FlatList
-            data={COFFEES}
-            keyExtractor={(item) => item.id}
-            numColumns={2}
-            scrollEnabled={false}
-            columnWrapperStyle={styles.gridRow}
-            contentContainerStyle={styles.gridContent}
-            renderItem={({ item }) => <CoffeeCard item={item} onPress={() => router.push(`/detail/${item.id}`)} />}
-          />
-
-
-        </ScrollView>
       </SafeAreaView>
     </View>
   );
 }
 
-
 const styles = StyleSheet.create({
+  // ── Root ───────────────────────────────────────────────────
   root: {
     flex: 1,
     backgroundColor: "#F9F9F9",
   },
 
+  // Dark solid block behind the fixed header only
   headerGradient: {
     position: "absolute",
     top: 0,
@@ -199,7 +236,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 
-  // Location 
+  // ── Fixed header container ──────────────────────────────────
+  fixedHeader: {
+    backgroundColor: "transparent",
+  },
+
+  // ── Location ───────────────────────────────────────────────
   locationRow: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -220,7 +262,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 6,
-    // marginBottom: 20,
   },
 
   locationValue: {
@@ -229,7 +270,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
 
-  //  Search 
+  // ── Search ─────────────────────────────────────────────────
   searchRow: {
     flexDirection: "row",
     paddingHorizontal: 24,
@@ -263,17 +304,22 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 
-  //  Banner 
+  // The Figma filter PNG icon size inside the button
+  filterIcon: {
+    width: 46,
+    height: 46,
+  },
+
+  // ── Banner ─────────────────────────────────────────────────
   bannerWrapper: {
     paddingHorizontal: 24,
-    marginBottom: 24,
+    marginBottom: 2,
   },
 
   banner: {
     height: 140,
     borderRadius: 16,
     overflow: "hidden",
-    position: "relative",
   },
 
   bannerBackgroundImage: {
@@ -286,12 +332,11 @@ const styles = StyleSheet.create({
     height: "100%",
   },
 
-  bannerOverlay: {
+  // Content sits on top of the image with no overlay tint
+  bannerContent: {
     flex: 1,
     padding: 16,
     justifyContent: "center",
-    // Subtle dark tint so white text is readable regardless of banner image
-    backgroundColor: "rgba(0,0,0,0.15)",
   },
 
   promoPill: {
@@ -300,7 +345,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 4,
     alignSelf: "flex-start",
-    marginBottom: 8,
+    marginBottom: 14,
   },
 
   promoText: {
@@ -309,40 +354,72 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
 
-  bannerHeadline: {
-    color: "#FFFFFF",
-    fontSize: 32,
-    fontWeight: "800",
-    lineHeight: 42,
+  // Stacked wrapper — each line is its own block
+  headlineWrapper: {
+    gap: 10,
+    alignItems: "flex-start",
+    
   },
 
-  //  Categories 
+  // Each line gets its own tight black bg
+  headlineLine: {
+    backgroundColor: "#000000",
+    paddingHorizontal: 4,
+    paddingTop: 8,
+    // paddingVertical: 2,
+    alignSelf: "flex-start",
+  },
+
+  bannerHeadline: {
+    fontFamily: "Sora_600SemiBold",   // swap to "Sora" if you aliased it differently
+    fontWeight: "600",
+    fontSize: 32,
+    lineHeight: 34,                   // 100% of font-size
+    color: "#FFFFFF",
+    marginTop: -18, 
+  },
+
+  // ── Categories ─────────────────────────────────────────────
   categoriesScroll: {
-    marginBottom: 20,
+    marginTop: 19,
+    marginBottom: 10,
   },
 
   categoriesContent: {
-    paddingHorizontal: 24,
+    paddingHorizontal: 2,
     gap: 10,
   },
 
   categoryPill: {
-    paddingHorizontal: 18,
-    paddingVertical: 10,
-    borderRadius: 20,
+    width: 87,
+    height: 29,
+    borderRadius: 6,
+    paddingTop: 4,
+    paddingBottom: 4,
+    paddingLeft: 8,
+    paddingRight: 8,
+    alignItems: "center",
+    justifyContent: "center",
   },
 
   categoryPillActive:   { backgroundColor: "#C67C4E" },
   categoryPillInactive: { backgroundColor: "#EDEDED" },
 
-  categoryText:         { fontSize: 13, fontWeight: "600" },
+  categoryText: {
+    fontFamily: "Sora_600SemiBold",
+    fontWeight: "600",
+    fontSize: 14,
+    lineHeight: 21,               // 150% of 14px
+  },
+
   categoryTextActive:   { color: "#FFFFFF" },
   categoryTextInactive: { color: "#313131" },
 
-  // Grid 
+  // ── Grid ───────────────────────────────────────────────────
   gridContent: {
     paddingHorizontal: 24,
-    paddingBottom: 120, // clears the floating tab bar
+    paddingTop: 16,
+    paddingBottom: 120,
   },
 
   gridRow: {
@@ -350,27 +427,35 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
 
-  //  Card 
+  // ── Card ───────────────────────────────────────────────────
   card: {
     width: CARD_WIDTH,
+    height: CARD_HEIGHT,
     backgroundColor: "#FFFFFF",
     borderRadius: 16,
     overflow: "hidden",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.07,
-    shadowRadius: 8,
-    elevation: 3,
+    padding: 8,
+    paddingBottom: 12,
+    // Removed shadow/elevation — not in Figma
   },
 
   cardImageWrapper: {
     width: "100%",
-    height: CARD_WIDTH,
+    flex: 1,
+    borderRadius: 12,
+    overflow: "hidden",
   },
 
   cardImage: {
     width: "100%",
     height: "100%",
+  },
+
+  cardImagePlaceholder: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#F0E6DC",
   },
 
   ratingBadge: {
@@ -392,9 +477,23 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
 
-  cardBody:     { padding: 12 },
-  cardName:     { color: "#1A1A1A", fontSize: 14, fontWeight: "700", marginBottom: 2 },
-  cardSubtitle: { color: "#A2A2A2", fontSize: 12, fontWeight: "400", marginBottom: 10 },
+  cardBody: {
+    paddingTop: 8,
+  },
+
+  cardName: {
+    color: "#1A1A1A",
+    fontSize: 14,
+    fontWeight: "700",
+    marginBottom: 2,
+  },
+
+  cardSubtitle: {
+    color: "#A2A2A2",
+    fontSize: 12,
+    fontWeight: "400",
+    marginBottom: 8,
+  },
 
   cardFooter: {
     flexDirection: "row",
@@ -402,7 +501,11 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
 
-  cardPrice: { color: "#1A1A1A", fontSize: 16, fontWeight: "700" },
+  cardPrice: {
+    color: "#1A1A1A",
+    fontSize: 16,
+    fontWeight: "700",
+  },
 
   addButton: {
     width: 32,
@@ -412,7 +515,4 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-
-
-
 });

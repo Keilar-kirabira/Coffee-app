@@ -1,9 +1,11 @@
 import { Tabs } from "expo-router";
-import { View, StyleSheet } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { View, StyleSheet, Image } from "react-native";
 
-const ACTIVE   = "#C67C4E";
-const INACTIVE = "#A2A2A2";
+// ── Custom Figma tab icons ─────────────────────────────────────
+import HomeIcon         from "../../assets/images/Home.png";
+import FavoritesIcon    from "../../assets/images/favorites.png";
+import BagIcon          from "../../assets/images/bag.png";
+import NotificationIcon from "../../assets/images/Notification.png";
 
 // ── Small dot under the active icon ───────────────────────────
 function ActiveDot() {
@@ -11,18 +13,20 @@ function ActiveDot() {
 }
 
 // ── Tab icon with optional dot below ──────────────────────────
-function TabIcon({ name, color, focused }) {
+function TabIcon({ source, focused, suppressDot }) {
   return (
     <View style={styles.iconWrapper}>
-      <Ionicons name={name} size={24} color={color} />
-      {focused && <ActiveDot />}
+      <Image
+        source={source}
+        style={styles.tabIcon}
+        resizeMode="contain"
+      />
+      {focused && !suppressDot && <ActiveDot />}
     </View>
   );
 }
 
 // ── Home indicator rendered inside the tab bar ────────────────
-// This is the dark pill at the top of the tab bar,
-// matching the iOS-style home indicator from the Figma design
 function TabBarBackground() {
   return (
     <View style={styles.tabBarBg}>
@@ -38,18 +42,15 @@ export default function TabsLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
-
-        // Renders TabBarBackground inside the tab bar container
         tabBarBackground: () => <TabBarBackground />,
-
         tabBarStyle: {
-          height: 99,
+          height: 96,
           backgroundColor: "#FFFFFF",
           borderTopLeftRadius: 24,
           borderTopRightRadius: 24,
           borderTopWidth: 0,
           paddingHorizontal: 24,
-          paddingTop: 12,  
+          paddingTop: 12,
           paddingBottom: 16,
           position: "absolute",
           shadowColor: "#000",
@@ -58,41 +59,38 @@ export default function TabsLayout() {
           shadowRadius: 12,
           elevation: 12,
         },
-
-        tabBarActiveTintColor:   ACTIVE,
-        tabBarInactiveTintColor: INACTIVE,
         tabBarShowLabel: false,
       }}
     >
       <Tabs.Screen
         name="home"
         options={{
-          tabBarIcon: ({ color, focused }) => (
-            <TabIcon name="home" color={color} focused={focused} />
+          tabBarIcon: ({ focused }) => (
+            <TabIcon source={HomeIcon} focused={focused} suppressDot={true} />
           ),
         }}
       />
       <Tabs.Screen
         name="favorites"
         options={{
-          tabBarIcon: ({ color, focused }) => (
-            <TabIcon name="heart-outline" color={color} focused={focused} />
+          tabBarIcon: ({ focused }) => (
+            <TabIcon source={FavoritesIcon} focused={focused} />
           ),
         }}
       />
       <Tabs.Screen
         name="cart"
         options={{
-          tabBarIcon: ({ color, focused }) => (
-            <TabIcon name="bag-outline" color={color} focused={focused} />
+          tabBarIcon: ({ focused }) => (
+            <TabIcon source={BagIcon} focused={focused} />
           ),
         }}
       />
       <Tabs.Screen
         name="notifications"
         options={{
-          tabBarIcon: ({ color, focused }) => (
-            <TabIcon name="notifications-outline" color={color} focused={focused} />
+          tabBarIcon: ({ focused }) => (
+            <TabIcon source={NotificationIcon} focused={focused} />
           ),
         }}
       />
@@ -108,16 +106,21 @@ const styles = StyleSheet.create({
     gap: 4,
   },
 
+  // ── PNG icon size ───────────────────────────────────────────
+  tabIcon: {
+    width: 32,
+    height: 32,
+  },
+
   // ── Active dot under icon ───────────────────────────────────
   dot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
+    width: 10,
+    height: 10,
+    borderRadius: 5,
     backgroundColor: "#C67C4E",
   },
 
   // ── Tab bar background container ────────────────────────────
-  // Must be absolute and fill the entire tab bar area
   tabBarBg: {
     position: "absolute",
     top: 0,
@@ -132,8 +135,8 @@ const styles = StyleSheet.create({
   // ── Indicator wrapper — centers the pill horizontally ───────
   homeIndicatorWrapper: {
     alignItems: "center",
-    marginTop: "auto", 
-    paddingBottom: 8, 
+    marginTop: "auto",
+    paddingBottom: 8,
   },
 
   // ── The dark pill itself ────────────────────────────────────

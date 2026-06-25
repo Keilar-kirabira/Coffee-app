@@ -385,19 +385,19 @@ const styles = StyleSheet.create({
 
   locationMarker: {
     position: 'absolute',
-    width: 36,
-    height: 38,
+    width: 19,
+    height: 19,
     top: 195,
-    left: '15%',
+    left: '17%',
     zIndex: 3,
   },
 
   bikerMarker: {
     position: 'absolute',
-    width: 40,
-    height: 40,
+    width: 19,
+    height: 19,
     top: 292,
-    left: '65%',
+    left: '68%',
     zIndex: 3,
   },
 
