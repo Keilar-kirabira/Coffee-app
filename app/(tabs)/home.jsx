@@ -77,47 +77,10 @@ export default function HomeScreen() {
   const [activeCategory, setActiveCategory] = useState("All Coffee");
   const [search, setSearch] = useState("");
 
-  // ── Fixed header rendered above the FlatList ───────────────
-  const ListHeader = () => (
-    <>
-      {/* Categories */}
-      <FlatList
-        data={CATEGORIES}
-        keyExtractor={(cat) => cat}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        style={styles.categoriesScroll}
-        contentContainerStyle={styles.categoriesContent}
-        renderItem={({ item: cat }) => {
-          const isActive = cat === activeCategory;
-          return (
-            <TouchableOpacity
-              style={[
-                styles.categoryPill,
-                isActive ? styles.categoryPillActive : styles.categoryPillInactive,
-              ]}
-              onPress={() => setActiveCategory(cat)}
-            >
-              <Text
-                style={[
-                  styles.categoryText,
-                  isActive ? styles.categoryTextActive : styles.categoryTextInactive,
-                ]}
-              >
-                {cat}
-              </Text>
-            </TouchableOpacity>
-          );
-        }}
-      />
-    </>
-  );
-
   return (
-    // 1. Root is plain #F9F9F9 — no gradient here
     <View style={styles.root}>
 
-      {/* 2. Dark gradient covers only the header area */}
+      {/* Dark background behind header area */}
       <LinearGradient
         colors={["#1A1A1A", "#1A1A1A", "#1A1A1A"]}
         style={styles.headerGradient}
@@ -125,7 +88,7 @@ export default function HomeScreen() {
 
       <SafeAreaView style={styles.safe} edges={["top"]}>
 
-        {/* ── FIXED HEADER ──────────────────────────────────── */}
+        {/* ── FIXED HEADER — never scrolls ──────────────────── */}
         <View style={styles.fixedHeader}>
 
           {/* Location */}
@@ -151,7 +114,6 @@ export default function HomeScreen() {
                 onChangeText={setSearch}
               />
             </View>
-            {/* 3. Replaced Ionicons filter icon with Figma PNG */}
             <TouchableOpacity style={styles.filterButton}>
               <Image source={FiletIcon} style={styles.filterIcon} resizeMode="contain" />
             </TouchableOpacity>
@@ -165,22 +127,10 @@ export default function HomeScreen() {
                 style={styles.bannerBackgroundImage}
                 resizeMode="cover"
               />
-              {/*
-                4. Removed the semi-transparent overlay View that was
-                   creating the unwanted dark block over the banner image.
-                   The promo pill and headline sit directly on the image.
-              */}
               <View style={styles.bannerContent}>
                 <View style={styles.promoPill}>
                   <Text style={styles.promoText}>Promo</Text>
                 </View>
-
-                {/*
-                  5. Each line gets its own tight black background.
-                     We split the headline into two separate Text nodes,
-                     each wrapped in a View with alignSelf="flex-start"
-                     so the black bg hugs only the text width.
-                */}
                 <View style={styles.headlineWrapper}>
                   <View style={styles.headlineLine}>
                     <Text style={styles.bannerHeadline}>Buy one get</Text>
@@ -192,14 +142,45 @@ export default function HomeScreen() {
               </View>
             </View>
           </View>
+
+          {/* Categories — fixed, cards scroll under these */}
+          <FlatList
+            data={CATEGORIES}
+            keyExtractor={(cat) => cat}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            style={styles.categoriesScroll}
+            contentContainerStyle={styles.categoriesContent}
+            renderItem={({ item: cat }) => {
+              const isActive = cat === activeCategory;
+              return (
+                <TouchableOpacity
+                  style={[
+                    styles.categoryPill,
+                    isActive ? styles.categoryPillActive : styles.categoryPillInactive,
+                  ]}
+                  onPress={() => setActiveCategory(cat)}
+                >
+                  <Text
+                    style={[
+                      styles.categoryText,
+                      isActive ? styles.categoryTextActive : styles.categoryTextInactive,
+                    ]}
+                  >
+                    {cat}
+                  </Text>
+                </TouchableOpacity>
+              );
+            }}
+          />
+
         </View>
 
-        {/* ── SCROLLABLE GRID with categories as ListHeaderComponent ── */}
+        {/* ── SCROLLABLE CARDS GRID ─────────────────────────── */}
         <FlatList
           data={COFFEES}
           keyExtractor={(item) => item.id}
           numColumns={2}
-          ListHeaderComponent={<ListHeader />}
           columnWrapperStyle={styles.gridRow}
           contentContainerStyle={styles.gridContent}
           showsVerticalScrollIndicator={false}
@@ -223,7 +204,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#F9F9F9",
   },
 
-  // Dark solid block behind the fixed header only
   headerGradient: {
     position: "absolute",
     top: 0,
@@ -304,7 +284,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 
-  // The Figma filter PNG icon size inside the button
   filterIcon: {
     width: 46,
     height: 46,
@@ -332,7 +311,6 @@ const styles = StyleSheet.create({
     height: "100%",
   },
 
-  // Content sits on top of the image with no overlay tint
   bannerContent: {
     flex: 1,
     padding: 16,
@@ -354,29 +332,25 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
 
-  // Stacked wrapper — each line is its own block
   headlineWrapper: {
     gap: 10,
     alignItems: "flex-start",
-    
   },
 
-  // Each line gets its own tight black bg
   headlineLine: {
     backgroundColor: "#000000",
     paddingHorizontal: 4,
     paddingTop: 8,
-    // paddingVertical: 2,
     alignSelf: "flex-start",
   },
 
   bannerHeadline: {
-    fontFamily: "Sora_600SemiBold",   // swap to "Sora" if you aliased it differently
+    fontFamily: "Sora_600SemiBold",
     fontWeight: "600",
     fontSize: 32,
-    lineHeight: 34,                   // 100% of font-size
+    lineHeight: 34,
     color: "#FFFFFF",
-    marginTop: -18, 
+    marginTop: -18,
   },
 
   // ── Categories ─────────────────────────────────────────────
@@ -386,7 +360,8 @@ const styles = StyleSheet.create({
   },
 
   categoriesContent: {
-    paddingHorizontal: 2,
+    paddingHorizontal: 24,
+
     gap: 10,
   },
 
@@ -409,7 +384,7 @@ const styles = StyleSheet.create({
     fontFamily: "Sora_600SemiBold",
     fontWeight: "600",
     fontSize: 14,
-    lineHeight: 21,               // 150% of 14px
+    lineHeight: 21,
   },
 
   categoryTextActive:   { color: "#FFFFFF" },
@@ -436,7 +411,6 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     padding: 8,
     paddingBottom: 12,
-    // Removed shadow/elevation — not in Figma
   },
 
   cardImageWrapper: {
