@@ -55,7 +55,7 @@ export default function OrderScreen() {
   const itemTotal   = coffee.price * quantity;
   const discount    = 1.0;
   const deliveryFee = 1.0;
-  const total       = itemTotal - discount + deliveryFee;
+  const total = itemTotal + deliveryFee; 
 
   return (
     <View style={styles.root}>
@@ -117,7 +117,7 @@ export default function OrderScreen() {
             </View>
           </View>
 
-          <View style={styles.divider} />
+          {/* <View style={styles.divider} /> */}
 
           {/* ── Coffee Item ── */}
           <View style={styles.section}>
@@ -295,6 +295,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#E0E0E0",
     backgroundColor: "#FFFFFF",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 6,
+    elevation: 3,
   },
   addressActionText: {
     fontSize: 12,
@@ -344,6 +349,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#EDEDED",
     backgroundColor: "#FFFFFF",
+     shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    elevation: 4,
   },
   discountLeft: { flexDirection: "row", alignItems: "center", gap: 10 },
   discountText: {
@@ -392,6 +402,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 16,
     gap: 12,
+ 
   },
   walletIconWrap: {
     width: 40,
